@@ -1087,6 +1087,11 @@ def render_pernambuco_map_page():
         return
 
     st.sidebar.markdown('### Mapa')
+    st.sidebar.info(
+        'Ajuste aqui a aparência geral do mapa. Para colorir os municípios por indicador, '
+        'carregue uma base de dados na seção abaixo; depois do upload, novas opções de '
+        'coluna, escala e faixas de cor serão exibidas automaticamente.'
+    )
     label_size = st.sidebar.slider('Tamanho dos nomes', min_value=5, max_value=16, value=6)
     label_color = st.sidebar.color_picker('Cor dos nomes', '#111827')
     boundary_color = st.sidebar.color_picker('Cor das divisas municipais', '#ffffff')
@@ -1098,10 +1103,16 @@ def render_pernambuco_map_page():
         value_format = st.sidebar.radio('Formato do valor', ['Inteiro', 'Decimal'], horizontal=True)
         if value_format == 'Decimal':
             decimal_places = st.sidebar.number_input('Casas decimais', min_value=1, max_value=4, value=2, step=1)
+    st.sidebar.markdown('### Base de indicadores')
+    st.sidebar.caption(
+        'Você pode carregar uma base própria em CSV ou Excel, desde que ela tenha uma coluna '
+        'com o nome do Município ou o código IBGE e outra coluna com o indicador. Se preferir, '
+        'baixe o modelo disponível no final da página e preencha seus valores.'
+    )
     uploaded_indicator = st.sidebar.file_uploader(
-        'Indicadores CSV ou Excel',
+        'Carregar base CSV ou Excel',
         type=['csv', 'xlsx', 'xls'],
-        help='Use uma coluna com Município ou código IBGE e outra coluna numérica para o indicador.'
+        help='Após carregar a base, o menu de customização do indicador será exibido abaixo.'
     )
 
     geojson = base_geojson
@@ -1141,6 +1152,10 @@ def render_pernambuco_map_page():
         municipio_col = st.sidebar.selectbox('Coluna do Município/código', columns, index=columns.index(municipio_guess))
         value_col = st.sidebar.selectbox('Coluna do indicador', columns, index=columns.index(value_guess))
         st.sidebar.markdown('### Cores do indicador')
+        st.sidebar.caption(
+            'Escolha como os municípios serão coloridos. Use escala automática para uma graduação '
+            'baseada nos valores ou faixas personalizadas para regras específicas.'
+        )
         color_mode = st.sidebar.radio(
             'Regra de coloração',
             ['Escala automática', 'Faixas personalizadas'],
