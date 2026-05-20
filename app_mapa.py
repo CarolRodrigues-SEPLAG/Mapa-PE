@@ -46,6 +46,7 @@ def render_map_app():
     st.sidebar.markdown('### Mapa')
     label_size = st.sidebar.slider('Tamanho dos nomes', min_value=5, max_value=16, value=6)
     label_color = st.sidebar.color_picker('Cor dos nomes', '#111827')
+    boundary_color = st.sidebar.color_picker('Cor das divisas municipais', '#ffffff')
     label_background = st.sidebar.checkbox('Reforçar contorno branco dos nomes', value=True)
     show_values = st.sidebar.checkbox('Mostrar valor junto ao nome', value=False)
 
@@ -196,7 +197,8 @@ def render_map_app():
         label_background=label_background,
         show_values=show_values,
         value_format=value_format,
-        decimal_places=decimal_places
+        decimal_places=decimal_places,
+        boundary_color=boundary_color
     )
 
     st.download_button(
